@@ -1,7 +1,7 @@
 # ✨🦉 Hogwarts Quest 🪄✨
 
 <div align="center">
-  <img src="https://i.imgur.com/3Yp7C1e.png" alt="Coruja de Hogwarts" width="180"/>
+  <img src="https://imgur.com/smah4zG.png" alt="Coruja de Hogwarts" width="180"/>
 </div>
 
 ---

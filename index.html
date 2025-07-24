@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Presente Mágico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background-color: #0c0520;
+            background-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/97b52585-7e65-43ff-bed5-1c7ac61d7225.png');
+            color: #d4af37;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path fill='%23d4af37' d='M16 1L1 16l15 15 1-1-14-14L17 2z'/><path fill='%23d4af37' d='M16 1l15 15-15 15-1-1 14-14L15 2z'/></svg>"), auto;
+        }
+        
+        .parchment {
+            background-color: #f8f3e6;
+            background-image: linear-gradient(to bottom, rgba(248,243,230,0.9) 0%, rgba(235,225,206,1) 100%);
+            border: 12px solid transparent;
+            border-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/71b23ae1-1a1e-45f4-8963-7d81832b4f93.png') 30 round;
+            color: #2a1b3d;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        
+        .hogwarts-header {
+            font-family: 'Cinzel Decorative', serif;
+            text-shadow: 0 0 5px #8a6dff, 0 0 10px #5e43b3;
+            color: #5e43b3;
+            letter-spacing: 1px;
+        }
+        
+        .floating-candle {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .marvel-dc-icon {
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.7));
+        }
+        
+        .package-tracker {
+            border: 2px dashed #8a6dff;
+            background: rgba(138, 109, 255, 0.1);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(138, 109, 255, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="absolute top-0 left-0 w-full flex justify-center space-x-8 p-4">
+        <div class="floating-candle">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/57860a4d-8e01-4aeb-8748-dce8675bb31e.png" alt="Vela flutuante iluminada" class="h-20">
+        </div>
+        <div class="floating-candle" style="animation-delay: 0.5s;">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39b7fc76-e7ab-49f2-b136-4284abda8919.png" alt="Vela flutuante iluminada" class="h-20">
+        </div>
+        <div class="floating-candle" style="animation-delay: 1s;">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/50d2f2fa-54d7-45d8-9c94-08517d77d362.png" alt="Vela flutuante iluminada" class="h-20">
+        </div>
+    </div>
+
+    <div class="parchment p-8 md:p-12 max-w-3xl w-full relative z-10">
+        <div class="text-center mb-8">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3c239d5f-682e-4079-85c3-a3cc94a0be7b.png" alt="Brasão de Hogwarts" class="mx-auto mb-4">
+            <h1 class="hogwarts-header text-3xl md:text-4xl font-bold mb-2">O Presente Mágico</h1>
+            <p class="italic">"Draco dormiens nunquam titillandus"</p>
+        </div>
+
+        <div class="mb-8">
+            <p class="mb-4">Prezada Bruxa,</p>
+            <p class="mb-4">O Ministério da Magia detectou atividade mágica incomum em sua residência. Nossos sensores identificaram:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Presença de dois jovens bruxos (Arthur e Felipe)</li>
+                <li>Um trouxa especialmente encantador (Toninho)</li>
+                <li>Forte conexão com os Guardiões das Galáxias</li>
+            </ul>
+            <p class="mb-4">Como reconhecimento por seus serviços à comunidade mágica, enviamos um artefato especial que chegará em breve.</p>
+        </div>
+
+        <div class="package-tracker p-4 mb-8 text-center rounded-lg">
+            <h2 class="font-bold mb-2">Rastreamento do Pacote Mágico</h2>
+            <div class="flex justify-between items-center mb-2">
+                <span>Status:</span>
+                <span class="font-bold animate-pulse">Em trânsito</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div class="bg-yellow-600 h-4 rounded-full w-3/4 animate-pulse"></div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="font-bold text-xl mb-4 border-b border-amber-800 pb-2">Prepare-se para a Entrega</h2>
+            <p class="mb-4">Resolva estes enigmas para desbloquear informações sobre seu presente:</p>
+            
+            <div class="bg-purple-50 p-4 mb-4 rounded-lg border border-purple-200 shadow-sm">
+                <p class="font-bold mb-2">Enigma 1:</p>
+                <p>"Eu voo sem asas, choro sem olhos. O que sou?"</p>
+                <input type="text" class="w-full mt-2 p-2 border border-amber-300 rounded" placeholder="Sua resposta...">
+            </div>
+            
+            <div class="bg-amber-50 p-4 mb-4 rounded border border-amber-200">
+                <p class="font-bold mb-2">Enigma 2:</p>
+                <p>"Qual criatura mágica é conhecida por guardar tesouros?"</p>
+                <input type="text" class="w-full mt-2 p-2 border border-amber-300 rounded" placeholder="Sua resposta...">
+            </div>
+            
+            <button class="bg-purple-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg w-full transition duration-300 transform hover:scale-105 shadow-lg">
+                Verificar Respostas
+            </button>
+        </div>
+
+        <div class="flex justify-center space-x-6 mb-4">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1d086136-7144-4af9-816c-6aeffc0d4dc3.png" alt="Ícone de raio - Harry Potter" class="marvel-dc-icon">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d82e64e9-3c71-4a60-a4eb-2275ca7e62db.png" alt="Ícone de escudo - Capitão América" class="marvel-dc-icon">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/99a6b5b4-55bf-4152-b5af-08de56365752.png" alt="Ícone de estrela - Guardiões da Galáxia" class="marvel-dc-icon">
+        </div>
+
+        <div class="text-center text-sm italic">
+            <p>Este mensageiro desaparecerá em 24 horas após a entrega</p>
+            <p>Não é permitido o uso de magia negra neste envio</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('button').addEventListener('click', function() {
+            alert('As respostas serão verificadas quando o pacote chegar! Continue tentando...');
+        });
+        
+        // Efeito de digitação
+        const letters = document.querySelectorAll('p, li');
+        letters.forEach((letter, index) => {
+            letter.style.animationDelay = `${index * 0.1}s`;
+            letter.classList.add('animate-fadeIn');
+        });
+    </script>
+</body>
+</html>
+

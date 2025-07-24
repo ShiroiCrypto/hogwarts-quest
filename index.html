@@ -1,152 +1,414 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Presente Mágico</title>
+    <title>A Carta de Hogwarts</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&display=swap');
-        
+        /* CSS Customizado */
         body {
-            font-family: 'Cinzel', serif;
-            background-color: #0c0520;
-            background-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/97b52585-7e65-43ff-bed5-1c7ac61d7225.png');
-            color: #d4af37;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path fill='%23d4af37' d='M16 1L1 16l15 15 1-1-14-14L17 2z'/><path fill='%23d4af37' d='M16 1l15 15-15 15-1-1 14-14L15 2z'/></svg>"), auto;
+            background-color: #0c0a1a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .font-cinzel {
+            font-family: 'Cinzel Decorative', cursive;
+        }
+
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
         
-        .parchment {
-            background-color: #f8f3e6;
-            background-image: linear-gradient(to bottom, rgba(248,243,230,0.9) 0%, rgba(235,225,206,1) 100%);
-            border: 12px solid transparent;
-            border-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/71b23ae1-1a1e-45f4-8963-7d81832b4f93.png') 30 round;
-            color: #2a1b3d;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        /* Estilos da Linha do Tempo */
+        .timeline-container {
+            position: relative;
+            padding-left: 50px; /* Espaço para a linha e ícones */
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #332d5c; /* Cor da linha do tempo */
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: -33px; /* Posição do ícone sobre a linha */
+            top: 0;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 1;
+            border: 4px solid #0c0a1a; /* Borda para "flutuar" sobre a linha */
         }
         
-        .hogwarts-header {
-            font-family: 'Cinzel Decorative', serif;
-            text-shadow: 0 0 5px #8a6dff, 0 0 10px #5e43b3;
-            color: #5e43b3;
-            letter-spacing: 1px;
+        /* Animações de Fade */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .floating-candle {
-            animation: float 3s ease-in-out infinite;
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
         }
-        
-        .marvel-dc-icon {
-            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.7));
-        }
-        
-        .package-tracker {
-            border: 2px dashed #8a6dff;
-            background: rgba(138, 109, 255, 0.1);
-            animation: pulse 2s infinite;
-            box-shadow: 0 0 15px rgba(138, 109, 255, 0.3);
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
+        .fade-out {
+            animation: fadeOut 0.8s ease-in forwards;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="absolute top-0 left-0 w-full flex justify-center space-x-8 p-4">
-        <div class="floating-candle">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/57860a4d-8e01-4aeb-8748-dce8675bb31e.png" alt="Vela flutuante iluminada" class="h-20">
-        </div>
-        <div class="floating-candle" style="animation-delay: 0.5s;">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39b7fc76-e7ab-49f2-b136-4284abda8919.png" alt="Vela flutuante iluminada" class="h-20">
-        </div>
-        <div class="floating-candle" style="animation-delay: 1s;">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/50d2f2fa-54d7-45d8-9c94-08517d77d362.png" alt="Vela flutuante iluminada" class="h-20">
-        </div>
+<body class="font-space-grotesk">
+
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- PÁGINA DE ENTRADA -->
+    <div id="landing-page" class="min-h-screen flex flex-col items-center justify-center text-center p-4">
+        <h1 class="font-cinzel text-5xl md:text-7xl text-purple-300 mb-4 tracking-widest">
+            A Sua Carta de Hogwarts
+        </h1>
+        <p class="max-w-2xl text-lg md:text-xl text-gray-300 mb-8">
+            Uma coruja-correio atravessou céus e terras, trazendo uma correspondência muito especial. Aceite-a para descobrir seu destino mágico.
+        </p>
+        <button id="track-button" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-purple-900/50 transition-all duration-300 transform hover:scale-105">
+            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+            Seguir a Coruja
+        </button>
     </div>
 
-    <div class="parchment p-8 md:p-12 max-w-3xl w-full relative z-10">
-        <div class="text-center mb-8">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3c239d5f-682e-4079-85c3-a3cc94a0be7b.png" alt="Brasão de Hogwarts" class="mx-auto mb-4">
-            <h1 class="hogwarts-header text-3xl md:text-4xl font-bold mb-2">O Presente Mágico</h1>
-            <p class="italic">"Draco dormiens nunquam titillandus"</p>
-        </div>
-
-        <div class="mb-8">
-            <p class="mb-4">Prezada Bruxa,</p>
-            <p class="mb-4">O Ministério da Magia detectou atividade mágica incomum em sua residência. Nossos sensores identificaram:</p>
-            <ul class="list-disc pl-6 mb-4">
-                <li>Presença de dois jovens bruxos (Arthur e Felipe)</li>
-                <li>Um trouxa especialmente encantador (Toninho)</li>
-                <li>Forte conexão com os Guardiões das Galáxias</li>
-            </ul>
-            <p class="mb-4">Como reconhecimento por seus serviços à comunidade mágica, enviamos um artefato especial que chegará em breve.</p>
-        </div>
-
-        <div class="package-tracker p-4 mb-8 text-center rounded-lg">
-            <h2 class="font-bold mb-2">Rastreamento do Pacote Mágico</h2>
-            <div class="flex justify-between items-center mb-2">
-                <span>Status:</span>
-                <span class="font-bold animate-pulse">Em trânsito</span>
+    <!-- CONTEÚDO PRINCIPAL (INICIALMENTE OCULTO) -->
+    <main id="main-content" class="hidden container mx-auto p-4 md:p-8">
+        
+        <!-- SEÇÃO DE RASTREIO -->
+        <section id="tracking-section" class="mb-16">
+            <h2 class="font-cinzel text-4xl text-center text-teal-300 mb-12">Percurso da Coruja</h2>
+            <div id="timeline-container" class="timeline-container max-w-3xl mx-auto">
+                <!-- Status serão injetados aqui via JS -->
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-4">
-                <div class="bg-yellow-600 h-4 rounded-full w-3/4 animate-pulse"></div>
+        </section>
+
+        <!-- CARTA DE CONVITE DE HOGWARTS -->
+        <section id="hogwarts-invite" class="mb-16 flex justify-center">
+            <div class="relative bg-gradient-to-br from-yellow-100/90 to-amber-200/80 border-4 border-yellow-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8 text-gray-800 font-serif">
+                <div class="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                    <span class="inline-block bg-yellow-300 border-2 border-yellow-700 rounded-full p-2 shadow-lg">
+                        <i class="fa-solid fa-envelope-open-text text-3xl text-yellow-800"></i>
+                    </span>
+                    <span class="block mt-2 font-cinzel text-lg text-yellow-900 tracking-widest">HOGWARTS</span>
+                </div>
+                <h2 class="font-cinzel text-3xl text-center text-yellow-800 mb-6 mt-8">Carta de Admissão</h2>
+                <p class="mb-4 text-lg">Prezada Professora Roberta,</p>
+                <p class="mb-4">Temos o prazer de informar que você foi oficialmente convidada a ingressar na Escola de Magia e Bruxaria de Hogwarts. Sua dedicação à magia, seu coração generoso e sua coragem notável não passaram despercebidos pelo nosso Ministério.</p>
+                <ul class="mb-4 pl-6 list-disc text-base">
+                    <li>Presença de dois jovens bruxos <b>(Arthur e Felipe)</b></li>
+                    <li>Um trouxa especialmente encantador <b>(Toninho)</b></li>
+                    <li>Forte conexão com os <b>Guardiões da Galáxia</b></li>
+                </ul>
+                <p class="mb-4">Como reconhecimento por seus feitos extraordinários, uma coruja-correio foi enviada com um presente especial, que chegará em breve à sua Sala Precisa.</p>
+                <p class="mb-4">Que sua jornada seja repleta de feitiços de alegria, poções de felicidade e aventuras mágicas. Que o Mapa do Maroto sempre aponte os melhores caminhos e que a Força esteja com você, hoje e sempre.</p>
+                <div class="mt-8 text-right">
+                    <p class="font-cinzel text-lg text-yellow-900">Com carinho,</p>
+                    <p class="font-cinzel text-base text-yellow-800">O Ministério da Magia</p>
+                </div>
             </div>
+        </section>
+
+        <!-- SEÇÃO DE ENIGMAS -->
+        <section id="riddles-section" class="mb-16">
+            <h2 class="font-cinzel text-4xl text-center text-amber-300 mb-12">Desvendar os Feitiços</h2>
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Enigma 1 -->
+                <div class="bg-indigo-900/30 p-6 rounded-lg border border-indigo-700">
+                    <h3 class="font-bold text-xl mb-3 text-indigo-300">Enigma 1: O Troféu Alado</h3>
+                    <p class="text-gray-300 mb-4">Tenho asas de ouro, mas não sou um pássaro. Sou veloz e difícil de pegar. Em um jogo de bruxos, minha captura encerra a partida. O que sou eu?</p>
+                    <input id="riddle1-input" type="text" class="w-full bg-gray-900/50 border border-gray-600 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Sua resposta...">
+                    <button onclick="checkRiddle(1)" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
+                    <p id="riddle1-feedback" class="mt-3 h-5 text-sm"></p>
+                </div>
+
+                <!-- Enigma 2 -->
+                <div class="bg-teal-900/30 p-6 rounded-lg border border-teal-700">
+                    <h3 class="font-bold text-xl mb-3 text-teal-300">Enigma 2: O Baú de Memórias</h3>
+                    <p class="text-gray-300 mb-4">Guardo pensamentos e memórias em fios prateados. Sou uma bacia de pedra, mas posso te afogar em lembranças. O que sou eu?</p>
+                    <input id="riddle2-input" type="text" class="w-full bg-gray-900/50 border border-gray-600 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-teal-400" placeholder="Sua resposta...">
+                    <button onclick="checkRiddle(2)" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
+                    <p id="riddle2-feedback" class="mt-3 h-5 text-sm"></p>
+                </div>
+                
+                <!-- Enigma 3 -->
+                <div class="bg-amber-900/30 p-6 rounded-lg border border-amber-700">
+                    <h3 class="font-bold text-xl mb-3 text-amber-300">Enigma 3: O Segredo do Dragão</h3>
+                    <p class="text-gray-300 mb-4">Sou um ovo de ouro, mas não contenho uma criatura. Para ouvir meu segredo, você deve me levar para um banho. O que sou eu?</p>
+                    <input id="riddle3-input" type="text" class="w-full bg-gray-900/50 border border-gray-600 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="Sua resposta...">
+                    <button onclick="checkRiddle(3)" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
+                    <p id="riddle3-feedback" class="mt-3 h-5 text-sm"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENSAGEM FINAL -->
+        <div id="family-message" class="hidden max-w-3xl mx-auto bg-gradient-to-br from-purple-800 to-indigo-900 p-8 rounded-xl shadow-2xl shadow-purple-900/50 border border-purple-500 text-center">
+            <h2 class="font-cinzel text-3xl text-yellow-300 mb-4">Pergaminho Revelado!</h2>
+            <p class="text-lg text-gray-200">
+                Parabéns, bruxo(a) notável! Sua inteligência é tão afiada quanto um feitiço bem lançado. 
+                Com todo o amor do mundo (trouxa e mágico), sua família. Malfeito feito! Feliz Aniversário!
+            </p>
         </div>
 
-        <div class="mb-8">
-            <h2 class="font-bold text-xl mb-4 border-b border-amber-800 pb-2">Prepare-se para a Entrega</h2>
-            <p class="mb-4">Resolva estes enigmas para desbloquear informações sobre seu presente:</p>
-            
-            <div class="bg-purple-50 p-4 mb-4 rounded-lg border border-purple-200 shadow-sm">
-                <p class="font-bold mb-2">Enigma 1:</p>
-                <p>"Eu voo sem asas, choro sem olhos. O que sou?"</p>
-                <input type="text" class="w-full mt-2 p-2 border border-amber-300 rounded" placeholder="Sua resposta...">
-            </div>
-            
-            <div class="bg-amber-50 p-4 mb-4 rounded border border-amber-200">
-                <p class="font-bold mb-2">Enigma 2:</p>
-                <p>"Qual criatura mágica é conhecida por guardar tesouros?"</p>
-                <input type="text" class="w-full mt-2 p-2 border border-amber-300 rounded" placeholder="Sua resposta...">
-            </div>
-            
-            <button class="bg-purple-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg w-full transition duration-300 transform hover:scale-105 shadow-lg">
-                Verificar Respostas
-            </button>
-        </div>
+    </main>
+    
+    <footer class="text-center p-4 text-xs text-gray-500">
+        <p>&copy; 2024 - Uma criação mágica para uma pessoa especial.</p>
+    </footer>
 
-        <div class="flex justify-center space-x-6 mb-4">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1d086136-7144-4af9-816c-6aeffc0d4dc3.png" alt="Ícone de raio - Harry Potter" class="marvel-dc-icon">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d82e64e9-3c71-4a60-a4eb-2275ca7e62db.png" alt="Ícone de escudo - Capitão América" class="marvel-dc-icon">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/99a6b5b4-55bf-4152-b5af-08de56365752.png" alt="Ícone de estrela - Guardiões da Galáxia" class="marvel-dc-icon">
-        </div>
+    <!-- A música será adicionada aqui. O src deve ser um link válido. -->
+    <audio id="birthday-song" src=""></audio>
 
-        <div class="text-center text-sm italic">
-            <p>Este mensageiro desaparecerá em 24 horas após a entrega</p>
-            <p>Não é permitido o uso de magia negra neste envio</p>
-        </div>
-    </div>
 
     <script>
-        document.querySelector('button').addEventListener('click', function() {
-            alert('As respostas serão verificadas quando o pacote chegar! Continue tentando...');
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- LÓGICA DO CANVAS DE PARTÍCULAS ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = `rgba(224, 231, 255, ${Math.random() * 0.5 + 0.3})`; // Tons de azul claro
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
         
-        // Efeito de digitação
-        const letters = document.querySelectorAll('p, li');
-        letters.forEach((letter, index) => {
-            letter.style.animationDelay = `${index * 0.1}s`;
-            letter.classList.add('animate-fadeIn');
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
         });
+
+        // --- LÓGICA DE TRANSIÇÃO DE PÁGINA ---
+        const trackButton = document.getElementById('track-button');
+        const landingPage = document.getElementById('landing-page');
+        const mainContent = document.getElementById('main-content');
+
+        trackButton.addEventListener('click', () => {
+            landingPage.classList.add('fade-out');
+            landingPage.addEventListener('animationend', () => {
+                landingPage.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('fade-in');
+            }, { once: true });
+        });
+
+        // --- LÓGICA DA LINHA DO TEMPO (RASTREIO) ---
+        // IMPORTANTE: Configure a data de aniversário aqui!
+        // Formato: Ano, Mês (0-11), Dia
+        const birthdayDate = new Date(2025, 6, 25); // 25 de Julho de 2025
+        
+        // Define as datas dos status em relação ao aniversário
+        function getDateOffset(baseDate, days) {
+            const date = new Date(baseDate);
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+        const statuses = [
+            {
+                date: getDateOffset(birthdayDate, -7),
+                icon: 'fa-solid fa-feather-pointed',
+                color: 'bg-blue-500',
+                title: 'Pena de Aceitação Ativada',
+                description: 'A Pena de Aceitação registou um novo bruxo. O Livro de Admissão agora contém seu nome.'
+            },
+            {
+                date: getDateOffset(birthdayDate, -5),
+                icon: 'fa-solid fa-envelope-open-text',
+                color: 'bg-indigo-500',
+                title: 'Coruja-Correio a Caminho',
+                description: 'Sua carta foi selada e enviada do corujal de Hogwarts. A viagem pelo mundo dos trouxas começou.'
+            },
+            {
+                date: getDateOffset(birthdayDate, -2),
+                icon: 'fa-solid fa-wand-magic-sparkles',
+                color: 'bg-purple-500',
+                title: 'Sobrevoando o Beco Diagonal',
+                description: 'A coruja fez uma parada para se orientar. A energia mágica do Caldeirão Furado é forte por aqui.'
+            },
+            {
+                date: birthdayDate,
+                icon: 'fa-solid fa-hat-wizard',
+                color: 'bg-amber-400',
+                title: 'Entrega Realizada!',
+                description: 'A coruja bateu na sua janela! Seu presente de aniversário está escondido na Sala Precisa da sua casa... aquele lugar que aparece quando você mais precisa de algo para comer.'
+            }
+        ];
+        
+        function renderTimeline() {
+            const today = new Date();
+            // Para testes, descomente a linha abaixo e mude a data
+            // const today = new Date(2025, 6, 25); 
+            today.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineContainer.innerHTML = ''; // Limpa o container
+
+            statuses.forEach(status => {
+                const statusDate = new Date(status.date);
+                statusDate.setHours(0, 0, 0, 0);
+
+                const hasPassed = today >= statusDate;
+                const iconHtml = hasPassed 
+                    ? `<i class="${status.icon}"></i>` 
+                    : '<i class="fa-solid fa-lock"></i>';
+                const colorClass = hasPassed ? status.color : 'bg-gray-600';
+                const textColorClass = hasPassed ? 'text-gray-300' : 'text-gray-500';
+                const titleColorClass = hasPassed ? 'text-white' : 'text-gray-400';
+                 const specialHighlight = (hasPassed && status.icon === 'fa-solid fa-hat-wizard') ? 'shadow-lg shadow-amber-500/30 ring-2 ring-amber-400' : '';
+
+                const itemHtml = `
+                    <div class="timeline-item">
+                        <div class="timeline-icon ${colorClass} ${specialHighlight}">
+                            ${iconHtml}
+                        </div>
+                        <div class="p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+                            <h3 class="font-bold text-xl mb-1 ${titleColorClass}">${status.title}</h3>
+                            <time class="text-xs text-gray-500 mb-2 block">${statusDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</time>
+                            <p class="${textColorClass}">${status.description}</p>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.innerHTML += itemHtml;
+            });
+        }
+        
+        // --- LÓGICA DOS ENIGMAS ---
+        const answers = {
+            1: ['pomo de ouro', 'pomo'],
+            2: ['penseira'],
+            3: ['ovo', 'ovo de ouro']
+        };
+        const correctRiddles = new Set();
+        
+        window.checkRiddle = function(riddleNumber) {
+            const input = document.getElementById(`riddle${riddleNumber}-input`);
+            const feedback = document.getElementById(`riddle${riddleNumber}-feedback`);
+            const value = input.value.trim().toLowerCase();
+
+            if (answers[riddleNumber].includes(value)) {
+                feedback.textContent = 'Correto!';
+                feedback.classList.remove('text-red-400');
+                feedback.classList.add('text-green-400');
+                input.disabled = true;
+                input.nextElementSibling.disabled = true; // Desabilita o botão
+                correctRiddles.add(riddleNumber);
+
+                if (correctRiddles.size === 3) {
+                    const familyMessage = document.getElementById('family-message');
+                    familyMessage.classList.remove('hidden');
+                    familyMessage.classList.add('fade-in');
+                }
+            } else {
+                feedback.textContent = 'Incorreto. Tente novamente.';
+                feedback.classList.remove('text-green-400');
+                feedback.classList.add('text-red-400');
+            }
+        }
+
+        // --- LÓGICA DO ANIVERSÁRIO (MÚSICA) ---
+        function checkBirthday() {
+            const today = new Date();
+            if (today.getDate() === birthdayDate.getDate() && 
+                today.getMonth() === birthdayDate.getMonth() &&
+                today.getFullYear() === birthdayDate.getFullYear()) {
+                
+                const song = document.getElementById('birthday-song');
+                // Tenta tocar a música. Navegadores podem bloquear se não houver interação do usuário.
+                song.play().catch(error => {
+                    console.warn("Autoplay da música bloqueado pelo navegador. É necessária interação do usuário.", error);
+                    // Poderíamos mostrar um botão "Tocar música" aqui se quiséssemos
+                });
+            }
+        }
+
+        // --- INICIALIZAÇÃO ---
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+        renderTimeline();
+        checkBirthday();
+    });
     </script>
 </body>
 </html>
-
